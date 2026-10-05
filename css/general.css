@@ -1,0 +1,162 @@
+@import url('variables.css');
+
+/* body {
+    min-height: 100vh;
+    background-color: #f5f6fa;
+    font-family: Arial, sans-serif;
+    color: #1f2937;
+} */
+
+/* Cabeçalho */
+
+/* .header {
+    padding: 40px 8%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+} */
+
+/* MENU - SIDEBAR */
+.menu{
+    width: 240px;
+    height: 100vh;
+    padding: 25px 15px;
+    background-color: var( --bg-secundary-color);
+    color: #fff;
+}
+
+.menu-header{
+    padding: 0 10px 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-header h1{
+    margin: 0;
+    font-size: 24px;
+}
+
+.menu-header span{
+    color: #aeb8d0;
+    font-size: 13px;
+}
+
+.menu-items{
+    padding-top: 25px;
+}
+
+.menu-items ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.menu-items ul li a{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    color: #ffffff;
+    text-decoration: none;
+    transition: 0.2s all ease;
+}
+
+.menu-items ul li a{
+    background-color: transparent;
+    color: #fff;
+}
+
+.menu-items ul li a:hover{
+    background-color: #fff;
+    color: var(--bg-secundary-color);
+}
+
+.menu-items ul li a.active{
+    background-color: #fff;
+    color: var(--bg-secundary-color);
+}
+
+.menu-items ul li a span{
+    width: 20px;
+    text-align: center;
+}
+
+/* GERAL */
+.main{
+    padding: 70px;
+}
+.header h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #6b7280;
+}
+
+.container-list-vagas {
+    width: 84%;
+    max-width: 1100px;
+    margin: 35px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.card-vaga {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    transition: 0.2s ease;
+}
+
+.card-vaga:hover {
+    border-color: #3d1dc0;
+}
+
+/* Informações */
+
+.info-vaga {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.info-vaga h2 {
+    font-size: 20px;
+    color: #111827;
+}
+
+.empresa {
+    font-size: 15px;
+    font-weight: 600;
+    color: #4b5563;
+}
+
+.data {
+    font-size: 13px;
+    color: #9ca3af;
+}
+
+/* Botão */
+
+.btn-vaga {
+    padding: 11px 18px;
+    border-radius: 8px;
+    background-color: #3d1dc0;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-vaga:hover {
+    background-color: #2f159c;
+}

@@ -1,0 +1,73 @@
+@import url('variables.css');
+
+/* TELA DE LOGIN */
+.general-conteiner{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.display-right{
+    flex: 1;
+    background-color: var(--bg-secundary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.display-right div{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.display-right div h1{
+    color: #fff;
+    font-size: var(--size-h1)
+}
+
+.display-right div p{
+    color: #fff;
+    font-size: var(--size-p-destaque);
+    max-width: 80%;
+}
+
+.display-right div p span{
+    font-weight: bold;
+    color: var(--bg-primary-color);
+}
+
+.login-form{
+    flex: 1;
+    padding: 30px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-form form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-form form button{
+    padding: 10px;
+    border: none;
+    background-color: var(--bg-secundary-color);
+    color: #fff;
+    border-radius: 5px;
+    transition: background-color 0.1s ease;
+}
+
+.login-form form button:hover{
+    cursor: pointer;
+    background-color: var(--bg-primary-color);
+}
+
+.label-input{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
