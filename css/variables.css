@@ -4,6 +4,12 @@
     --bg-gray-color: #f0f0f0;
     --p-muted-color: #777;
 
+    /* messages */
+    --text-error: #84121c;
+    --text-success: #0aa32d;
+    --bg-success: #D4EDDA;
+    --bg-error: #F8D7DA;
+
     --size-h1: 42px;
     --size-p-destaque: 20px;
 }

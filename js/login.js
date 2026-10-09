@@ -5,6 +5,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 async function login(event){
     event.preventDefault()
+    
+    const errorMessage = document.getElementById("errorMessage")
+    errorMessage.innerText = ""
+    errorMessage.hidden = true
+    
     const email = document.getElementById("emailLogin").value
     const password = document.getElementById("passwordLogin").value
 
@@ -17,7 +22,8 @@ async function login(event){
     const URL_REDIRECT = "http://localhost:5500/pages/vagas.html"
     const accessToken = response.accessToken
     if(!accessToken){
-        // Fazer tratativa de null
+        errorMessage.innerText = "Não foi possível realizar o login. Tente novamente."
+        errorMessage.hidden = false
         return null
     }
     
@@ -36,20 +42,48 @@ async function getAccessToken(email, password){
         "senha": password
     }
 
-    const response = await fetch(`${URL}/auth/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    })
+    try{
+        const response = await fetch(`${URL}/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
 
-    if(!response.ok){
-        // Fazer tratativa dos status (400, 403, 500)
-        return null;
+        if(!response.ok){
+            const errorMessage = document.getElementById("errorMessage")
+            let messageError = ""
+            
+            // Tratando mensagens de erro
+            switch(response.status){
+                case 400:
+                    messageError = "Verifique os dados informados e tente novamente."
+                    break
+                case 401:
+                case 403:
+                    messageError = "E-mail ou senha incorretos. Verifique suas credenciais e tente novamente."
+                    break
+                case 404:
+                    messageError = "Serviço de login indisponível temporariamente. Tente novamente mais tarde."
+                    break
+                default:
+                    messageError = "Ocorreu um erro inesperado. Tente novamente mais tarde." 
+            }
+
+            errorMessage.innerText = messageError
+            errorMessage.hidden = false
+            return null;
+        }
+
+        return await response.json()
+
+    } catch(error){
+        const errorMessage = document.getElementById("errorMessage")
+        errorMessage.innerText = "Não foi possível conectar ao servidor. Tente novamente mais tarde." 
+        errorMessage.hidden = false
+        return null
     }
-
-    return response.json()
 }
 
 function storageAccessToken(accessToken){

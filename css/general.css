@@ -15,6 +15,27 @@
     border-bottom: 1px solid #e5e7eb;
 } */
 
+/* MENSAGENS */
+.message{
+    border-radius: 2px;
+    width: 100%;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.message.error{
+    color: var(--text-error);
+    border-left: solid 2px var(--text-error);
+    background-color: var(--bg-error);
+}
+
+.message.success {
+    color: var(--text-success);
+    border-left-color: var(--text-success);
+    background-color: var(--bg-success);
+}
+
 /* MENU - SIDEBAR */
 .menu{
     width: 240px;
@@ -87,6 +108,7 @@
 .main{
     padding: 70px;
 }
+
 .header h1 {
     font-size: 32px;
     margin-bottom: 8px;
