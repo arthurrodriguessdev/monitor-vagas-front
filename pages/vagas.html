@@ -3,25 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Monitor de Vagas | Vagas</title>
     <link rel="stylesheet" href="/css/general_configs.css">
     <link rel="stylesheet" href="/css/general.css">
     <script type="module" src="/js/app.js"></script>
-    <script type="module" src="/js/menu.js"></script>
+    <script src="/js/logout.js"></script>
 </head>
 <body>
-    <main>
+    <main class="estrutura">
         <div id="sidebar"></div>
-        <div id="vagas">
-            <div class="container-list-vagas">
-                <div class="card-vaga"> 
-                    <div class="info-vaga"> 
-                        <h2>Desenvolvedor Backend Java</h2> 
-                        <p class="empresa"> Tauste Supermercados </p> 
-                        <p class="data"> Publicada em 03/10/2026 </p> 
-                    </div> 
-                    <a class="btn-vaga" href="#" target="_blank"> Ver vaga</a> 
+
+        <div class="conteudo">
+            <header class="cabecalho">
+                <div>
+                    <h1>Vagas</h1>
+                    <p class="subtitulo">Encontre oportunidades que combinam com seus objetivos profissionais.</p>
                 </div>
+            </header>
+            
+            <div class="grades">
+                <section class="grade-acoes">
+                    <article class="cartao cartao-busca">
+                        <div class="cabecalho-cartao">
+                            <div>
+                                <p class="tipo-cartao">Busca manual</p>
+                                <h2>Buscar vagas</h2>
+                            </div>
+                        </div>
+                        <p class="descricao-cartao">Pesquise oportunidades pelas tecnologias que você conhece.</p>
+                        <form id="formBuscaVagas" class="form-buscar-vagas">
+                            <label for="palavraVaga">Buscar vagas</label>
+
+                            <div class="campo-busca">
+                                <input id="palavraVaga" type="text" placeholder="Digite uma tecnologia, ex.: Java" required="true"/>
+                                <button type="submit" class="botao botao-principal">Buscar</button>
+                            </div>
+                        </form>
+                    </article>
+
+                    <aside class="cartao cartao-preferencias">
+                        <div class="cabecalho-cartao">
+                            <div>
+                                <p class="tipo-cartao">Automação</p>
+                                <h2>Suas preferências</h2>
+                            </div>
+                        </div>
+
+                        <p class="descricao-cartao">Receba por e-mail oportunidades relacionadas às tecnologias que você acompanha.</p>
+
+                        <div class="destaque-preferencia">
+                            <span class="tag-destaque">Busca automática</span>
+                            <p>Todos os dias, às 18h.</p>
+                        </div>
+
+                        <button type="button" class="botao botao-secundario">Gerenciar preferências</button>
+                    </aside>
+                </section>
+
+                <section class="grade-resultados" aria-label="Resultados e vagas recebidas">
+                    <article class="cartao painel-resultados">
+                        <div class="cabecalho-cartao linha-cabecalho">
+                            <h2>Resultados da busca</h2>
+                            <div class="resumo-resultados">
+                                <span id="contadorVagas"></span>
+                            </div>
+                        </div>
+
+                        <div class="filtros" aria-label="Ferramentas de resultados">
+                            <span class="label-filtro">Ordenar por:</span>
+                            <button type="button" class="botao-filtro">Mais relevantes</button>
+                        </div>
+
+                        <div class="lista-vagas">
+                                <!-- <a class="botao botao-link" href="#" target="_blank" rel="noreferrer">Ver vaga</a> -->
+                        </div>
+                        
+                        <!-- Estados (retornos possíveis) de busca de vagas -->
+                        <div class="estado estado-vazio" hidden="true">
+                            <h3>Nenhuma vaga encontrada</h3>
+                            <p>Tente outra busca ou atualize suas preferências para ampliar as oportunidades.</p>
+                        </div>
+
+                        <div class="estado estado-erro message error" hidden="true">
+                            <p>Não foi possível carregar as vagas no momento. Tente novamente mais tarde.</p>
+                        </div>
+
+                        <div class="estado estado-inicial" hidden="true">
+                            <h3>Realize uma busca</h3>
+                            <p>Digite uma tecnologia ou palavra-chave para encontrar oportunidades compatíveis com sua trajetória.</p>
+                        </div>
+                    </article>
+                </section>
             </div>
         </div>
     </main>
