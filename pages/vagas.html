@@ -69,26 +69,24 @@
                             </div>
                         </div>
 
-                        <div class="filtros" aria-label="Ferramentas de resultados">
-                            <span class="label-filtro">Ordenar por:</span>
-                            <button type="button" class="botao-filtro">Mais relevantes</button>
-                        </div>
+                        <!-- Loading spinner -->
+                        <div class="spinner" id="loading" role="status" aria-label="Buscando vagas" hidden></div>
 
                         <div class="lista-vagas">
                                 <!-- <a class="botao botao-link" href="#" target="_blank" rel="noreferrer">Ver vaga</a> -->
                         </div>
                         
                         <!-- Estados (retornos possíveis) de busca de vagas -->
-                        <div class="estado estado-vazio" hidden="true">
+                        <div class="estado" id="estadoVazio" hidden>
                             <h3>Nenhuma vaga encontrada</h3>
                             <p>Tente outra busca ou atualize suas preferências para ampliar as oportunidades.</p>
                         </div>
 
-                        <div class="estado estado-erro message error" hidden="true">
+                        <div class="estado message error" id="estadoErroBusca" hidden>
                             <p>Não foi possível carregar as vagas no momento. Tente novamente mais tarde.</p>
                         </div>
 
-                        <div class="estado estado-inicial" hidden="true">
+                        <div class="estado estado-inicial" id="estadoInicial">
                             <h3>Realize uma busca</h3>
                             <p>Digite uma tecnologia ou palavra-chave para encontrar oportunidades compatíveis com sua trajetória.</p>
                         </div>
