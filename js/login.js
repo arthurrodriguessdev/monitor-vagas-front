@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", ()=>{
+    const messageSuccess = document.getElementById("successMessage")
+    if(messageSuccess && localStorage.getItem("usuarioCriado")){
+        messageSuccess.innerText = "Cadastro realizado com sucesso! Faça login para continuar."
+        messageSuccess.hidden = false
+        localStorage.removeItem("usuarioCriado")
+    }
+
     const form = document.getElementById('loginForm')
     form.addEventListener("submit", login)
 })

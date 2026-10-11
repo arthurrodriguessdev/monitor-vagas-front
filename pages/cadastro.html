@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Vagas | Cadastro</title>
+
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/general_configs.css">
+    <link rel="stylesheet" href="/css/general.css">
+
+    <script type="module" src="/js/cadastro.js"></script>
+</head>
+<body>
+    <main>
+        <div class="general-conteiner">
+            <div class="display-right">
+                <div>
+                    <h1>Encontre sua próxima oportunidade</h1>
+                    <p>Crie sua conta e <span>fique mais perto da vaga ideal para você.</span></p>
+                </div>
+            </div>
+
+            <div class="login-form">
+                <p class="message error" id="errorMessage" hidden="true"></p>
+                <p class="message success" id="successMessage" hidden="true"></p>
+                <div class="login-content">
+                    <h2>Crie sua conta</h2>
+                    <p class="login-description">
+                        Cadastre-se para acompanhar novas oportunidades.
+                    </p>
+
+                    <form id="cadastroForm">
+                        <div class="label-input">
+                            <label for="nomeCadastro">Nome:</label>
+                            <input type="text" id="nomeCadastro" autocomplete="name" required>
+                        </div>
+
+                        <div class="label-input">
+                            <label for="emailCadastro">E-mail:</label>
+                            <input type="email" id="emailCadastro" autocomplete="email" required>
+                        </div>
+
+                        <div class="label-input">
+                            <label for="senhaCadastro">Senha:</label>
+                            <input type="password" id="senhaCadastro" autocomplete="new-password" required>
+                        </div>
+
+                        <div class="label-input">
+                            <label for="confirmarSenhaCadastro">Confirme sua senha:</label>
+                            <input type="password" id="confirmarSenhaCadastro" autocomplete="new-password" required>
+                        </div>
+
+                        <button type="submit">Cadastrar</button>
+                    </form>
+
+                    <p class="cadastro-link">
+                        Já tem uma conta?
+                        <a href="/pages/login.html">Entrar</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -23,7 +23,7 @@ body{
 
 .message.success {
     color: var(--text-success);
-    border-left-color: var(--text-success);
+    border-left: solid 2px var(--text-success);
     background-color: var(--bg-success);
 }
 
