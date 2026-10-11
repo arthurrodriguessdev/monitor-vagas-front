@@ -1,11 +1,37 @@
 import { injectSidebar } from "./utilities/sidebar.js"
 
+let paginaAtual = 1
+let todasVagas = []
+const quantidadeVagasPagina = 10
+
 document.addEventListener("DOMContentLoaded", ()=>{
     injectSidebar()
+
+    const btnAnterior = document.getElementById("paginaAnterior")
+    const btnProxima = document.getElementById("proximaPagina")
+
+    // Eventos da paginação
+    btnAnterior.addEventListener("click", retornarPaginaAnterior)
+    btnProxima.addEventListener("click", retornarProximaPagina)
 
     const formBuscarVagas = document.getElementById("formBuscaVagas")
     formBuscarVagas.addEventListener("submit", buscarVagas)
 })
+
+function retornarPaginaAnterior(){
+    if(paginaAtual > 1){
+        paginaAtual--
+        renderizarPagina()
+    }
+}
+
+function retornarProximaPagina(){
+    const quantidadeMaximaPagina = todasVagas.length / quantidadeVagasPagina
+    if(paginaAtual < quantidadeMaximaPagina){
+        paginaAtual++
+        renderizarPagina()
+    }
+}
 
 function exibirEstadoBusca(estado){
     const estados = {
@@ -63,6 +89,14 @@ function injetarVagas(vagas){
     contadorVagas.textContent = `${vagas.length} ${vagas.length === 1 ? "vaga" : "vagas"}`
 }
 
+function renderizarPagina(){
+    const inicio = (paginaAtual - 1) * quantidadeVagasPagina
+    const fim = inicio + quantidadeVagasPagina
+
+    limparResultados()
+    injetarVagas(todasVagas.slice(inicio, fim))
+}
+
 async function buscarVagas(event){
     event.preventDefault()
 
@@ -108,13 +142,14 @@ async function buscarVagas(event){
             throw new Error("Erro ao pesquisar vagas")
         }
 
-        const vagasJson = await response.json()
-        if(vagasJson.length === 0){
+        todasVagas = await response.json()
+        if(todasVagas.length === 0){
             exibirEstadoBusca("vazio")
             return
         }
 
-        injetarVagas(vagasJson)
+        paginaAtual = 1
+        renderizarPagina(todasVagas)
         
     } catch(error) {
         console.error(error)
