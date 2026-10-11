@@ -110,3 +110,20 @@
     background-color: #fff;
     border-color: var(--bg-secundary-color);
 }
+
+.cadastro-link {
+    margin-top: 25px;
+    text-align: center;
+    color: var(--p-muted-color);
+    font-size: 15px;
+}
+
+.cadastro-link a {
+    color: var(--bg-secundary-color);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.cadastro-link a:hover {
+    text-decoration: underline;
+}

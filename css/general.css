@@ -157,15 +157,6 @@ body{
     margin-bottom: 16px;
 }
 
-.tipo-cartao {
-    margin: 0 0 6px;
-    color: var(--bg-primary-strong);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
 .cabecalho-cartao h2,
 .linha-cabecalho h2 {
     margin: 0;
@@ -181,22 +172,37 @@ body{
 
 .campo-busca {
     display: flex;
+    align-items: stretch;
+    gap: 12px;
 }
 
 .campo-busca input {
-    width: 100%;
-    padding: 14px 14px;
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
     border: 1px solid var(--borda);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--fundo-sutil);
     color: var(--texto);
+    font: inherit;
+    transition: border-color 0.2s ease;
 }
 
 .campo-busca input::placeholder {
     color: #8a90a8;
 }
 
-.campo-busca input:focus,
+.campo-busca input:focus {
+    outline: none;
+    border-color: var(--bg-secundary-color);
+}
+
+.campo-busca .botao {
+    flex-shrink: 0;
+    padding: 0 22px;
+    border-radius: 8px;
+}
+
 .botao:focus-visible,
 .pasta:focus-visible,
 .acao-item a:focus-visible,
@@ -363,7 +369,7 @@ body{
 .estado{
     margin-top: 18px;
     padding: 18px 16px;
-    border: 1px dashed var(--borda);
+    border: 1px solid var(--borda);
     border-radius: 10px;
     background: #fff;
     text-align: center;
