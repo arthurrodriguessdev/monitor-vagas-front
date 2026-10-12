@@ -108,9 +108,17 @@ function injetarVagas(vagas){
         nomeEmpresa.classList.add("empresa")
         nomeEmpresa.textContent = vaga.nomeEmpresa
 
+        // URL da vaga
+        const urlVaga = document.createElement("a")
+        urlVaga.classList.add("botao", "botao-link")
+        urlVaga.href = vaga.urlVaga
+        urlVaga.target = "_blank"
+        urlVaga.textContent = "Ver vaga"
+
         divInfoVagas.appendChild(divTituloVaga)
         divInfoVagas.appendChild(nomeEmpresa)
         articleVaga.appendChild(divInfoVagas)
+        articleVaga.appendChild(urlVaga)
         divListaVagas.appendChild(articleVaga);
     })
 
