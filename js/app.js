@@ -2,13 +2,15 @@ import { injectSidebar } from "./utilities/sidebar.js"
 
 let paginaAtual = 1
 let todasVagas = []
-const quantidadeVagasPagina = 10
+const quantidadeVagasPagina = 5
+let btnAnterior, btnProxima
 
 document.addEventListener("DOMContentLoaded", ()=>{
     injectSidebar()
+    document.querySelector("#paginacao").classList.add("sem-resultados")
 
-    const btnAnterior = document.getElementById("paginaAnterior")
-    const btnProxima = document.getElementById("proximaPagina")
+    btnAnterior = document.getElementById("paginaAnterior")
+    btnProxima = document.getElementById("proximaPagina")
 
     // Eventos da paginação
     btnAnterior.addEventListener("click", retornarPaginaAnterior)
@@ -53,11 +55,37 @@ function exibirEstadoBusca(estado){
 function limparResultados(){
     document.querySelector(".lista-vagas").replaceChildren()
     document.querySelector("#contadorVagas").textContent = ""
+    document.querySelector("#paginacao").classList.add("sem-resultados")
+    desabilitarBotoesPaginacao()
+}
+
+function habilitarBotoesPaginacao(){
+    document.querySelector("#paginacao").classList.remove("sem-resultados")
+    btnAnterior.hidden = false
+    btnProxima.hidden = false
+}
+
+function desabilitarBotoesPaginacao(){
+    btnAnterior.hidden = true
+    btnProxima.hidden = true
+}
+
+function atualizarContadorPaginacao(quantidadeVagas){
+    const contadorVagas = document.querySelector("#contadorVagas")
+    let quantidadeTotalVagas = todasVagas.length
+    let quantidadeVagasPorPagina = quantidadeVagas * paginaAtual
+
+    if(quantidadeVagas != quantidadeVagasPagina){
+        quantidadeVagasPorPagina = todasVagas.length
+    }
+
+    contadorVagas.textContent = `
+        ${quantidadeVagasPorPagina} de ${quantidadeTotalVagas} ${quantidadeTotalVagas === 1 ? "vaga" : "vagas"}
+    `
 }
 
 function injetarVagas(vagas){
     // Cria os elementos na interface e faz a injeção dos dados
-    const contadorVagas = document.querySelector("#contadorVagas")
     const divListaVagas = document.querySelector(".lista-vagas")
 
     vagas.forEach(vaga =>{
@@ -86,7 +114,10 @@ function injetarVagas(vagas){
         divListaVagas.appendChild(articleVaga);
     })
 
-    contadorVagas.textContent = `${vagas.length} ${vagas.length === 1 ? "vaga" : "vagas"}`
+    atualizarContadorPaginacao(vagas.length)
+    if(todasVagas.length > quantidadeVagasPagina){
+        habilitarBotoesPaginacao()
+    }
 }
 
 function renderizarPagina(){
@@ -134,10 +165,7 @@ async function buscarVagas(event){
                 exibirEstadoBusca("vazio")
                 return
 
-            } else if(response.status === 403){
-                // tratar
-                return
-            }
+            } 
 
             throw new Error("Erro ao pesquisar vagas")
         }
@@ -149,7 +177,7 @@ async function buscarVagas(event){
         }
 
         paginaAtual = 1
-        renderizarPagina(todasVagas)
+        renderizarPagina()
         
     } catch(error) {
         console.error(error)
