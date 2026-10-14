@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Vagas | Preferências</title>
+    <link rel="stylesheet" href="/css/general_configs.css">
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/preferencias.css">
+    <script type="module" src="/js/preferencias.js"></script>
+    <script src="/js/logout.js"></script>
+</head>
+<body>
+    <main class="estrutura pagina-preferencias">
+        <div id="sidebar"></div>
+
+        <div class="conteudo">
+            <header class="cabecalho cabecalho-preferencias">
+                <div>
+                    <h1>Preferências</h1>
+                    <p class="subtitulo">Gerencie as tecnologias e os temas que ajudam a encontrar oportunidades alinhadas aos seus objetivos.</p>
+                </div>
+                <button type="button" class="botao botao-principal" id="adicionarPreferencia">Adicionar preferência</button>
+            </header>
+
+            <section class="cartao cartao-gerenciamento-preferencias" aria-labelledby="tituloPreferencias">
+                <div class="cabecalho-cartao linha-cabecalho">
+                    <div>
+                        <h2 id="tituloPreferencias">Suas preferências</h2>
+                        <p class="descricao-cartao">As vagas serão relacionadas aos nomes cadastrados aqui.</p>
+                    </div>
+                </div>
+
+                <form id="formPreferencia" class="form-preferencia" hidden>
+                    <div class="campo-preferencia">
+                        <label for="nomePreferencia">Nome da preferência</label>
+                        <input id="nomePreferencia" name="nome" type="text" placeholder="Ex.: Java" required>
+                    </div>
+                    <div class="acoes-formulario">
+                        <button type="submit" class="botao botao-principal" id="salvarPreferencia">Salvar preferência</button>
+                        <button type="button" class="botao botao-secundario" id="cancelarPreferencia">Cancelar</button>
+                    </div>
+                </form>
+
+                <p class="message error" id="mensagemErroPreferencias" hidden></p>
+
+                <div class="spinner" id="loadingPreferencias" role="status" aria-label="Carregando preferências"></div>
+                <div class="lista-preferencias" id="listaPreferencias" aria-live="polite"></div>
+
+                <div class="estado" id="estadoVazioPreferencias" hidden>
+                    <h3>Nenhuma preferência cadastrada</h3>
+                    <p>Adicione uma tecnologia ou tema para personalizar as oportunidades que acompanha.</p>
+                </div>
+
+                <div class="estado message error estado-erro-preferencias" id="estadoErroPreferencias" role="alert" hidden>
+                    <p id="textoErroPreferencias">Não foi possível carregar as preferências. Tente novamente mais tarde.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
