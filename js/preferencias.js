@@ -1,7 +1,12 @@
 import { injectSidebar } from "./utilities/sidebar.js"
 import {
-    excluirPreferencia,
-} from "./utilities/preferencias-api.js"
+    salvarPreferenciaAPI,
+    alterarPreferenciaAPI,
+    listarPreferenciasAPI,
+    deletarPreferenciaAPI
+} from "./api/preferencias_api.js"
+
+import { isAuthenticated } from "./utilities/token.js"
 
 let preferencias = []
 let preferenciaEmEdicao = null
@@ -18,13 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     carregarPreferencias()
 })
 
-function isAuthenticated(){
-    if (!localStorage.getItem("accessToken")) {
-        location.href = "/pages/login.html"
-        return
-    }
-}
-
 /* Métodos utilitários */
 function exibirLoading() {
     document.getElementById("loadingPreferencias").hidden = false
@@ -40,10 +38,27 @@ function exibirErro(mensagem) {
     caixaErro.hidden = false
 }
 
+function exibirSucesso(mensagem){
+    const caixaSucesso = document.getElementById("mensagemSucessoPreferencias")
+    caixaSucesso.textContent = mensagem
+    caixaSucesso.hidden = false
+}
+
 function limparErro() {
     const caixaErro = document.getElementById("mensagemErroPreferencias")
     caixaErro.textContent = ""
     caixaErro.hidden = true
+}
+
+function limparMensagens() {
+    const erro = document.getElementById("mensagemErroPreferencias")
+    const sucesso = document.getElementById("mensagemSucessoPreferencias")
+
+    erro.textContent = ""
+    erro.hidden = true
+
+    sucesso.textContent = ""
+    sucesso.hidden = true
 }
 
 function exibirEstadoVazio(exibir) {
@@ -56,7 +71,6 @@ function renderizarPreferencias() {
     lista.replaceChildren() // Limpando a lista atual
 
     preferencias.forEach((preferencia, indice) => {
-        console.log(preferencia)
         const item = document.createElement("article")
         item.className = "item-preferencia"
 
@@ -94,18 +108,8 @@ async function carregarPreferencias(){
     exibirLoading()
     document.getElementById("estadoErroPreferencias").hidden = true
 
-    const URL = "http://localhost:8089"
-    const accessToken = localStorage.getItem("accessToken")
-
     try{
-        const response = await fetch(`${URL}/preferencia`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${accessToken}` 
-            }
-        })
-
+        const response = await listarPreferenciasAPI()
         if(!response.ok){
             throw new Error("Erro ao buscar as preferências do usuário.")
         }
@@ -160,33 +164,24 @@ async function salvarPreferencia(event){
     }
 
     const botaoSalvar = document.getElementById("salvarPreferencia")
-    const URL = "http://localhost:8089"
     botaoSalvar.disabled = true
 
     try{
-        let response = null
-        const accessToken = localStorage.getItem("accessToken")
+        let response
+
         if(preferenciaEmEdicao){
-
-            let nomeAtualizado = encodeURIComponent(nome)
-            let idPreferencia = preferenciaEmEdicao.Id
-            response = await fetch(`${URL}/preferencia/${idPreferencia}?nomeAtualizado=${nomeAtualizado}`, {
-                method: "PATCH",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`
-                }
-            })
-
-            console.log(response)
+            response = await alterarPreferenciaAPI(nome, preferenciaEmEdicao.id)
 
         } else{
-            // Preferência nova do usuário
-            response = await fetch(`${URL}/preferencia?nomePreferencia=${encodeURIComponent(nome)}`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${accessToken}`
-                }
-            })
+            response = await salvarPreferenciaAPI(nome)
+        }
+        
+        if(response.status === 200){
+            if(preferenciaEmEdicao){
+                exibirSucesso("Preferência alterada com sucesso.")
+            } else{
+                exibirSucesso("Nova preferência adicionada com sucesso.")
+            }
         }
 
         ocultarFormulario()
@@ -194,14 +189,32 @@ async function salvarPreferencia(event){
 
     } catch(error) {
         exibirErro(error.message)
+
     } finally {
         botaoSalvar.disabled = false
     }
 }
 
+async function excluirPreferencia(preferenciaDeletar){
+    try{
+        const response = await deletarPreferenciaAPI(preferenciaDeletar.id)
+
+        if(response.status === 404){
+            throw new Error("A preferência não foi encontrada ou não pode ser manipulada pelo usuário")
+        }
+
+        if(response.status == 204){
+            exibirSucesso("A preferência foi excluída com sucesso.")
+        }
+
+    } catch(error){
+        exibirErro(error.message)
+    }
+}
+
 async function tratarAcaoPreferencia(event) {
     const botao = event.target.closest("button[data-acao]")
-    if (!botao) {
+    if(!botao){
         return
     }
 
@@ -222,10 +235,12 @@ async function tratarAcaoPreferencia(event) {
     limparErro()
     botao.disabled = true
     try {
-        await excluirPreferencia()
+        await excluirPreferencia(preferencia)
         await carregarPreferencias()
+
     } catch (error) {
         exibirErro(error.message)
+
     } finally {
         botao.disabled = false
     }
