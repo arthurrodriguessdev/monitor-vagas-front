@@ -42,5 +42,40 @@ export async function callAPI(urlComplemento, keyMethod, temAutenticacao=true, b
         body: body != null ? JSON.stringify(body) : null
     })
 
-    return response
+    return tratarResponseAPI(response)
+}
+
+/**
+ * Faz o tratamento default da response retornada pela API
+ * @param {*} response - Retorno da requisição feita para algum endpoint
+ * @returns
+ * @throws {Error} Se !response.ok 
+ */
+export async function tratarResponseAPI(response){
+    if(response.ok){
+        return response
+    }
+
+    let message
+    try{
+        const dadosResponse = await response.json()
+        message = dadosResponse.message
+
+    } catch{
+        message = ""
+    }
+
+    if(!message){
+        const defaultMessages = {
+            400: "Os dados enviados são inválidos.",
+            401: "Sua sessão expirou. Faça login novamente.",
+            403: "Você não tem permissão para realizar esta ação.",
+            404: "O recurso solicitado não foi encontrado.",
+            500: "Erro interno do servidor. Tente novamente."
+        }
+
+        message = defaultMessages[response.status]
+    }
+
+    throw new Error(message)
 }

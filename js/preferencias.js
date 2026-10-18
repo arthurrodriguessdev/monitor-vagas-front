@@ -110,16 +110,13 @@ async function carregarPreferencias(){
 
     try{
         const response = await listarPreferenciasAPI()
-        if(!response.ok){
-            throw new Error("Erro ao buscar as preferências do usuário.")
-        }
-
         preferencias = await response.json()
         renderizarPreferencias()
         return true
 
     } catch(error){
         exibirErro(error.message)
+
     } finally{
         ocultarLoading()
     }
@@ -131,7 +128,7 @@ function iniciarAdicao() {
     document.getElementById("salvarPreferencia").textContent = "Salvar preferência"
     document.getElementById("formPreferencia").hidden = false
     document.getElementById("nomePreferencia").focus()
-    limparErro()
+    limparMensagens()
 }
 
 function iniciarEdicao(preferencia) {
@@ -140,7 +137,7 @@ function iniciarEdicao(preferencia) {
     document.getElementById("salvarPreferencia").textContent = "Salvar alterações"
     document.getElementById("formPreferencia").hidden = false
     document.getElementById("nomePreferencia").focus()
-    limparErro()
+    limparMensagens()
 }
 
 // Cancelamento de adição de preferência
@@ -148,12 +145,11 @@ function ocultarFormulario() {
     document.getElementById("formPreferencia").hidden = true
     document.getElementById("formPreferencia").reset()
     preferenciaEmEdicao = null
-    limparErro()
 }
 
 async function salvarPreferencia(event){
     event.preventDefault()
-    limparErro()
+    limparMensagens()
     isAuthenticated()
 
     const nome = document.getElementById("nomePreferencia").value.trim().toLowerCase()
@@ -167,21 +163,13 @@ async function salvarPreferencia(event){
     botaoSalvar.disabled = true
 
     try{
-        let response
-
         if(preferenciaEmEdicao){
-            response = await alterarPreferenciaAPI(nome, preferenciaEmEdicao.id)
+            await alterarPreferenciaAPI(nome, preferenciaEmEdicao.id)
+            exibirSucesso("Preferência alterada com sucesso.")
 
         } else{
-            response = await salvarPreferenciaAPI(nome)
-        }
-        
-        if(response.status === 200){
-            if(preferenciaEmEdicao){
-                exibirSucesso("Preferência alterada com sucesso.")
-            } else{
-                exibirSucesso("Nova preferência adicionada com sucesso.")
-            }
+            await salvarPreferenciaAPI(nome)
+            exibirSucesso("Preferência adicionada com sucesso.")
         }
 
         ocultarFormulario()
@@ -196,28 +184,17 @@ async function salvarPreferencia(event){
 }
 
 async function excluirPreferencia(preferenciaDeletar){
-    try{
-        const response = await deletarPreferenciaAPI(preferenciaDeletar.id)
-
-        if(response.status === 404){
-            throw new Error("A preferência não foi encontrada ou não pode ser manipulada pelo usuário")
-        }
-
-        if(response.status == 204){
-            exibirSucesso("A preferência foi excluída com sucesso.")
-        }
-
-    } catch(error){
-        exibirErro(error.message)
-    }
+    await deletarPreferenciaAPI(preferenciaDeletar.id)
+    exibirSucesso("A preferência foi excluída com sucesso.")
 }
 
-async function tratarAcaoPreferencia(event) {
+async function tratarAcaoPreferencia(event){
     const botao = event.target.closest("button[data-acao]")
     if(!botao){
         return
     }
 
+    limparMensagens()
     const preferencia = preferencias[Number(botao.dataset.indice)]
     if (!preferencia) {
         return
