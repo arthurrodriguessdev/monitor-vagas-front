@@ -1,4 +1,6 @@
 import { injectSidebar } from "./utilities/sidebar.js"
+import { buscarVagasAPI } from "./api/vagas_api.js"
+import { isAuthenticated } from "./utilities/token.js"
 
 let paginaAtual = 1
 let todasVagas = []
@@ -138,12 +140,7 @@ function renderizarPagina(){
 
 async function buscarVagas(event){
     event.preventDefault()
-
-    const accessToken = localStorage.getItem("accessToken")
-    if(!accessToken) {
-        window.location.href = "/pages/login.html"
-        return null
-    }
+    isAuthenticated()
 
     const campoBusca = document.getElementById("palavraVaga")
     const palavraVagaBuscar = campoBusca.value.trim()
@@ -152,32 +149,14 @@ async function buscarVagas(event){
     }
 
     const loading = document.querySelector("#loading")
-    const URL = 'http://localhost:8089'
 
     exibirEstadoBusca(null)
     limparResultados()
     loading.hidden = false // Habilitando loading
 
     try{
-        const response = await fetch(`${URL}/vagas/pesquisar`, {
-            method: 'POST',
-            body: JSON.stringify([palavraVagaBuscar]),
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            }
-        })
+        const response = await buscarVagasAPI([palavraVagaBuscar])
         
-        if(!response.ok){
-            if(response.status === 404){
-                exibirEstadoBusca("vazio")
-                return
-
-            } 
-
-            throw new Error("Erro ao pesquisar vagas")
-        }
-
         todasVagas = await response.json()
         if(todasVagas.length === 0){
             exibirEstadoBusca("vazio")
@@ -187,8 +166,7 @@ async function buscarVagas(event){
         paginaAtual = 1
         renderizarPagina()
         
-    } catch(error) {
-        console.error(error)
+    } catch(error){
         exibirEstadoBusca("erro")
 
     } finally {
