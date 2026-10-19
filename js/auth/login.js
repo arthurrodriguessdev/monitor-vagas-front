@@ -1,5 +1,5 @@
-import { loginUsuarioAPI } from "./api/usuario_api.js"
-import { toStorageAccessToken } from "./utilities/token.js"
+import { loginUsuarioAPI } from "../api/usuario_api.js"
+import { toStorageAccessToken } from "../utilities/token.js"
 
 document.addEventListener("DOMContentLoaded", ()=>{
     const messageSuccess = document.getElementById("successMessage")
