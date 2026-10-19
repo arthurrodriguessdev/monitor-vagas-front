@@ -244,6 +244,7 @@ body{
     background: var(--fundo-sutil);
     color: var(--bg-secundary-color);
     border: 1px solid var(--borda);
+    text-decoration: none;
 }
 
 .botao-link{
