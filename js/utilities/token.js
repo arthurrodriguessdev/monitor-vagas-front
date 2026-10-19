@@ -3,8 +3,12 @@ export function getAccessToken(){
 }
 
 export function isAuthenticated(){
-    if (!localStorage.getItem("accessToken")) {
+    if (!getAccessToken()) {
         location.href = "/pages/login.html"
         return
     }
+}
+
+export function toStorageAccessToken(accessToken){
+    localStorage.setItem('accessToken', accessToken)
 }

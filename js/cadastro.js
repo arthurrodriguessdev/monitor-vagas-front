@@ -1,32 +1,44 @@
+import { cadastrarUsuarioAPI } from "./api/usuario_api.js"
+
 document.addEventListener("DOMContentLoaded", ()=>{
     const formCadastro = document.getElementById("cadastroForm")
     formCadastro.addEventListener("submit", cadastroUsuario)
 })
 
-// Realiza a validação dos dados no front para uma melhor experiência do usuário (também realizadas no back)
-function validarDados(nome, email, senha, senhaConfirmacao) {
+function exibirMensagemErro(message){
     const error = document.getElementById("errorMessage")
-    let errorMessage = ""
+    error.innerText = message
+    error.hidden = false
+}
 
+function limparMensagemErro() {
+    const error = document.getElementById("errorMessage")
+    error.innerText = ""
+    error.hidden = true
+}
+
+/**
+ * Faz a validação dos dados enviados para cadastro
+ * @param {*} nome - Nome do usuário
+ * @param {*} email - E-mail do usuário
+ * @param {*} senha - Senha de acesso
+ * @param {*} senhaConfirmacao - Confirmação da senha
+ * @returns 
+ */
+function validarDados(nome, email, senha, senhaConfirmacao) {
     if (!nome.trim() || !email.trim() || !senha || !senhaConfirmacao) {
-        errorMessage = "Todos os campos são obrigatórios."
-        error.innerText = errorMessage
-        error.hidden = false
-        return false;
+        exibirMensagemErro("Todos os campos são obrigatórios.")
+        return false
     }
 
     if (senha.length < 8) {
-        errorMessage = "A senha deve ter, no mínimo, 8 caracteres."
-        error.innerText = errorMessage
-        error.hidden = false
-        return false;
+        exibirMensagemErro("A senha deve ter, no mínimo, 8 caracteres.")
+        return false
     }
 
     if (senha !== senhaConfirmacao) {
-        errorMessage = "As senhas não coincidem"
-        error.innerText = errorMessage
-        error.hidden = false
-        return false;
+        exibirMensagemErro("As senhas não coincidem.")
+        return false
     }
 
     return true;
@@ -34,17 +46,13 @@ function validarDados(nome, email, senha, senhaConfirmacao) {
 
 async function cadastroUsuario(e){
     e.preventDefault()
+    limparMensagemErro()
 
     const nomeUsuario = document.getElementById("nomeCadastro").value
     const emailUsuario = document.getElementById("emailCadastro").value
     const senhaUsuario = document.getElementById("senhaCadastro").value
     const confirmacaoSenha = document.getElementById("confirmarSenhaCadastro").value
-
-    const error = document.getElementById("errorMessage")
-    error.hidden = true;
-
     const ehValido = validarDados(nomeUsuario, emailUsuario, senhaUsuario, confirmacaoSenha) 
-    const URL = "http://localhost:8089"
 
     if(ehValido){
         const dadosCadastro = {
@@ -54,29 +62,14 @@ async function cadastroUsuario(e){
         }
 
         try{
-            const response = await fetch(`${URL}/auth/register`, {
-                method: "POST",
-                body: JSON.stringify(dadosCadastro),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
+            await cadastrarUsuarioAPI(dadosCadastro)
 
             // Guarda identificador para a mensagem de sucesso e faz o redirect
-            if(response.ok){
-                localStorage.setItem("usuarioCriado", true)
-                location.href = "http://localhost:5500/pages/login.html"
-                return
-            }
-
-            const dadosErro = await response.json()
-            error.innerText = dadosErro.message;
-            error.hidden = false;
+            localStorage.setItem("usuarioCriado", true)
+            location.href = "/pages/login.html"
 
         } catch(error){
-            console.log(error)
-            error.innerText = "Não foi possível conectar ao servidor. Tente novamente."
-            error.hidden = false
+            exibirMensagemErro(error.message)
         }
     }
 }
